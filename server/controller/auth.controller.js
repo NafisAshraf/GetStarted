@@ -130,4 +130,84 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+/// VERIFY USER //////////////////////////////////////////////
+
+const verifyUser = async (req, res) => {
+  const { token } = req.body;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decoded);
+
+    const user = await userModel.findOneAndUpdate(
+      { email: decoded.email },
+      { $set: { verification: "verified" } }
+    );
+
+    console.log(user);
+    return res.status(200).json({
+      message: "User verified successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+/// RESEND VERIFICATION //////////////////////////////////////////////
+
+const resendVerification = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const verifyEmail = await userModel.findOne({ email: email });
+    if (!verifyEmail) {
+      return res.status(403).json({
+        message: "Email not found",
+      });
+    } else {
+      const verificationToken = jwt.sign(
+        { email: email },
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" }
+      );
+
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASSWORD,
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: "Email Verification",
+        html: `<h2>Please click on this new given link to verify your email</h2>
+               <p>${process.env.CLIENT_URL}verify-user/${verificationToken}</p>`,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return res.status(500).json({
+            message: error.message,
+          });
+        } else {
+          return res.status(200).json({
+            message: "Verification link sent to your email",
+            token: verificationToken,
+          });
+        }
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { register, login, verifyUser, resendVerification };
