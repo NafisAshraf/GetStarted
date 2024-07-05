@@ -13,6 +13,8 @@ const {
   register,
   resendVerification,
   verifyUser,
+  forgetPassword,
+  resetpassword,
 } = require("../controller/auth.controller");
 
 //Importing the JWT verifyer from auth middleware
@@ -28,5 +30,9 @@ router.post("/login", loginValidation, login);
 router.post("/resend-verification", resendVerification);
 //Verify User
 router.post("/verify-user/:token", verifyUser);
+//Forget Password
+router.post("/forgot-password", forgetPassword);
+//Reset Password
+router.post("/reset-password/:token", resetpassword);
 
 module.exports = router;

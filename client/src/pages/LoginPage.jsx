@@ -21,23 +21,12 @@ const LoginPage = () => {
         }
       );
 
-      //local storage
-      //   localStorage.setItem("userinfo", JSON.stringify(response.data));
+      // local storage
+        localStorage.setItem("userinfo", JSON.stringify(response.data));
       setAuthUser(response.data);
       console.log(response.data);
 
-      //   const { accessToken } = response.data;
-      //   const { userType } = response.data;
-      //   const { userName } = response.data;
-      //   const { userId } = response.data;
-      //   const { phoneNumber } = response.data;
-
-      //   localStorage.setItem("userName", userName);
-      //   localStorage.setItem("userType", userType);
-      //   localStorage.setItem("accessToken", accessToken);
-      //   localStorage.setItem("userId", userId);
-      //   localStorage.setItem("phoneNumber", phoneNumber);
-
+      
       navigate("/");
       console.log(response.data);
     } catch (error) {

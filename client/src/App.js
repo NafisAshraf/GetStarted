@@ -7,6 +7,8 @@ import HomePage from "./components/Homepage";
 import SignUp from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import VerifyUser from "./pages/VerifyUserPage";
+import ResetPassword from "./pages/ResetPasswordPage";
+import ForgotPassword from "./pages/ForgotPasswordPage";
 
 const router = createBrowserRouter([
   {
@@ -21,14 +23,14 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <SignUp />,
   },
-  // {
-  //   path: "/forgotpassword",
-  //   element: <ForgotPassword />,
-  // },
-  // {
-  //   path: "/reset-password/:token",
-  //   element: <ResetPassword />,
-  // },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/reset-password/:token",
+    element: <ResetPassword />,
+  },
   {
     path: "/verify-user/:token",
     element: <VerifyUser />,
