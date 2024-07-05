@@ -1,2 +1,2 @@
 # GetStarted
- CSE471 Project  - Crowdfunding website using MERN stack
+ CSE470 Project  - Crowdfunding website using MERN stack
